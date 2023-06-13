@@ -76,7 +76,7 @@ public class LipSyncBaseSound : MonoBehaviour
 
         List<Data> KouXing = KouXings[AudioIndex];
 
-
+        //如果正在播放音频，那么根据List中的音素去累加对应的口型的BlendShape的权重
         if (!Audio.isPlaying)
         {
             isPlayingAudio = false;
@@ -187,6 +187,7 @@ public class LipSyncBaseSound : MonoBehaviour
     }
     
 
+    //音频文本识别
     private void Analysis(TextAsset jsonFile)
     {
         singleCharacter.Clear();
@@ -194,6 +195,8 @@ public class LipSyncBaseSound : MonoBehaviour
 
         Vosk VoskData = JsonUtility.FromJson<Vosk>(jsonFile.text);
 
+        //对每个文字循环，先转成拼音，然后根据声母韵母发音来平均分每个文字的时长
+        //进而生成一个List，里面是每个音素和对应的开始结束时间
         foreach (Result item in VoskData.result)
         {
             //Debug.Log(item.word.Length + "conf " + item.conf + "end " + item.end + "start " + item.start + "word " + item.word);
